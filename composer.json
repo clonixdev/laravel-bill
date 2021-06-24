@@ -1,12 +1,12 @@
 {
-    "name": "grosv/laravel-package-template",
-    "description": "A repository template for Laravel packages",
+    "name": "clonixdev/laravel-bill",
+    "description": "Bill System",
     "type": "library",
     "license": "MIT",
     "authors": [
         {
-            "name": "Ed Grosvenor",
-            "email": "ed.grosvenor@wickedviral.com"
+            "name": "Clonix",
+            "email": "dev@clonix.com.ar"
         }
     ],
     "minimum-stability": "dev",
@@ -21,7 +21,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Grosv\\LaravelPackageTemplate\\": "src/"
+            "Clonixdev\\LaravelBill\\": "src/"
         }
     },
     "autoload-dev": {
@@ -32,7 +32,7 @@
     },
     "extra": {
         "laravel": {
-            "providers": "Grosv\\LaravelPackageTemplate\\LaravelPackageTemplateProvider"
+            "providers": "Clonixdev\\LaravelBill\\LaravelBillProvider"
         }
     },
     "scripts": {
