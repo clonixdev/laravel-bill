@@ -1,6 +1,6 @@
 <?php
 
-namespace Grosv\LaravelPackageTemplate;
+namespace Clonixdev\LaravelBill;
 
 use Illuminate\Support\ServiceProvider;
 

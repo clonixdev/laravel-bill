@@ -14,10 +14,13 @@ class CreateInvoicesTable extends Migration
     public function up()
     {
         Schema::create('invoices', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
 
             $table->string('code')->nullable();
             $table->string('code_format')->nullable();
+            $table->string('external_code')->nullable();
+            $table->string('tracking_code')->nullable();
+
             $table->string('seller_name')->nullable();
             $table->string('seller_tax_id')->nullable();
             $table->string('seller_last_name')->nullable();
@@ -40,14 +43,35 @@ class CreateInvoicesTable extends Migration
             $table->string('buyer_state')->nullable();
             $table->string('buyer_country')->nullable();
 
+            $table->integer('status')->unsigned();
+            $table->integer('pay_status')->unsigned()->nullable();
+            $table->integer('ship_status')->unsigned()->nullable();
+
+            $table->double('sub_total')->nullable();
+            $table->double('tax')->nullable();
+            $table->double('ship')->nullable();
+            $table->double('total')->nullable();
+         
+
+
+
+            $table->decimal('ship_lat', 10, 8)->nullable();
+            $table->decimal('ship_lng', 11, 8)->nullable();
+            $table->string('ship_address')->nullable();
+            $table->string('ship_city')->nullable();
+            $table->string('ship_state')->nullable();
+            $table->string('ship_country')->nullable();
+
+
             $table->timestamp('invoice_date')->nullable();
             $table->timestamp('invoice_date_range')->nullable();
             $table->timestamp('expire_at')->nullable();
 
             $table->boolean('is_subscription')->default(0);
+            $table->boolean('has_shipping')->default(0);
             $table->bigInteger('currency_id')->unsigned();
             $table->bigInteger('pay_method_id')->unsigned()->nullable();
-
+            $table->bigInteger('user_id')->unsigned()->nullable();
             $table->text('comments')->nullable();
             $table->timestamps();
         });

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace Clonixdev\LaravelBill\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
