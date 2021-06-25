@@ -19,7 +19,11 @@ composer require clonixdev/laravel-bill
 
 ### Config
 
-
+[
+    'defaultCurrency' => 'ARS',
+    'prefix' => 'api',
+    'middleware' => ['web'],
+]
 ### Routes
 
 GET /invoices
