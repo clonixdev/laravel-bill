@@ -2,9 +2,11 @@
 
 namespace Clonixdev\LaravelBill\Http\Controllers;
 
+use Clonixdev\LaravelBill\Jobs\ProcessExternal;
+use Clonixdev\LaravelBill\Models\PayMethod;
+use Clonixdev\LaravelBill\Models\PayMethodRecord;
 
-
-class InvoiceController extends Controller
+class PayMethodController extends Controller
 {
 
     public function index()
@@ -12,7 +14,7 @@ class InvoiceController extends Controller
         //
     }
 
-    public function show()
+    public function show($id)
     {
         //
     }
@@ -20,14 +22,25 @@ class InvoiceController extends Controller
     public function store()
     {
 
-        if (! auth()->check()) {
-            abort (403, 'Only authenticated users can create new invoices.');
-        }
 
+    }
 
-        $client = auth()->user();
+    public function update()
+    {
+
 
     }
 
 
+    public function externalLink($id){
+        $pay_method = PayMethod::where('id',$id)->first();
+        $request = request();
+
+        $record = new PayMethodRecord();
+        $record->pay_method_id = $pay_method->id;
+        $record->payload = $request->all();
+        $record->save();
+        ProcessExternal::dispatch($record);
+
+    }
 }

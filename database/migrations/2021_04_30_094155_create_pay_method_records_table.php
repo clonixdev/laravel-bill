@@ -20,6 +20,7 @@ class CreatePayMethodRecordsTable extends Migration
             $table->integer('status')->unsigned()->nullable();
             $table->text('payload')->nullable();
             $table->string('comments')->nullable();
+            $table->text('interface_result')->nullable();
             $table->timestamps();
         });
     }
