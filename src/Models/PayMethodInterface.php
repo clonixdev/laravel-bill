@@ -22,7 +22,7 @@ class PayMethodInterface
         Return:
         - 
     */
-    public static function checkout($invoice){
+    public static function checkout($invoice,$params){
 
 
 

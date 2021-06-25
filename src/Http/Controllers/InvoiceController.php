@@ -25,7 +25,7 @@ class InvoiceController  extends ApiBaseController
         $client = auth()->user();
 
         if($pay_method->interface){
-            $return_callback = call_user_func($this->pay_method->interface .'::checkout');
+            $return_callback = call_user_func($this->pay_method->interface .'::checkout',$invoice,$pay_method->params);
         }
 
 
