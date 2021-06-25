@@ -10,9 +10,9 @@ composer require clonixdev/laravel-bill
 
 1. run composer require clonixdev/laravel-bill
 
-2. run php artisan publish
+2. php artisan vendor:publish --provider="Clonixdev\LaravelBill\LaravelBillProvider" --tag="config"
 
-3. run php artisan publish migrations
+3. php artisan vendor:publish --provider="Clonixdev\LaravelBill\LaravelBillProvider" --tag="migrations"
 
 4. run php artisan migrate
 
