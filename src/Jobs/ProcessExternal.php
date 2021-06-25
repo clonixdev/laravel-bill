@@ -15,10 +15,12 @@ class ProcessExternal implements ShouldQueue
 
 
     public $record;
+    public $request;
 
-    public function __construct($record)
+    public function __construct($record,$request)
     {
         $this->record = $record;
+        $this->request = $request;
     }
 
     public function handle()
@@ -26,7 +28,7 @@ class ProcessExternal implements ShouldQueue
      
         if($this->record->pay_method->interface){
 
-            $return_callback = call_user_func($this->pay_method->interface .'::onMessage',$this->record);
+            $return_callback = call_user_func($this->pay_method->interface .'::onMessage',$this->record,$this->request);
 
             $this->record->interface_result = $return_callback;
             $this->record->status = PayMethodRecord::STATUS_PROCESSED;

@@ -9,9 +9,6 @@ class PayMethodInterface
     
 
 
-    const STATUS_PENDING = 1;
-    const STATUS_REJECT = 2;
-    const STATUS_PAID = 3;
 
     
 
@@ -37,10 +34,10 @@ class PayMethodInterface
         Return:
         - [ 'status' => 1 | 2 | 3 , 'transaction' => 'XXXXXXX' ]
     */
-    public static function onMessage($record){
+    public static function onMessage($record,$request){
 
 
-        return [ 'status' => PayMethodInterface::STATUS_PENDING , 'transaction' => 'XXXXXX'];
+        return [ 'status' => Invoice::STATUS_PAID ,'pay_status' => Invoice::PAY_STATUS_PAID , 'ship_status' => Invoice::SHIP_STATUS_DISPATCHING , 'transaction' => 'XXXXXX'];
 
     }
 }

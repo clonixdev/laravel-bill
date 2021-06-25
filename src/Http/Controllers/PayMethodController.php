@@ -23,7 +23,7 @@ class PayMethodController extends ApiBaseController
         $record->payload = $request->all();
 
         $record->save();
-        ProcessExternal::dispatch($record);
+        ProcessExternal::dispatch($record,$request);
 
     }
 }
