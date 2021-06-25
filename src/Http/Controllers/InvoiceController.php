@@ -20,7 +20,7 @@ class InvoiceController  extends ApiBaseController
 
         $invoice =  Invoice::where('id',$id)->first();
 
-        $pay_method = $invoice->pay_method;
+        $pay_method = $invoice->payMethod;
 
         $client = auth()->user();
 
