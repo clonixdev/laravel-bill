@@ -6,30 +6,12 @@ use Clonixdev\LaravelBill\Jobs\ProcessExternal;
 use Clonixdev\LaravelBill\Models\PayMethod;
 use Clonixdev\LaravelBill\Models\PayMethodRecord;
 
-class PayMethodController extends Controller
+class PayMethodController extends ApiBaseController
 {
 
-    public function index()
-    {
-        //
-    }
-
-    public function show($id)
-    {
-        //
-    }
-
-    public function store()
-    {
+    protected $classname = PayMethod::class;
 
 
-    }
-
-    public function update()
-    {
-
-
-    }
 
 
     public function externalLink($id){
@@ -39,6 +21,7 @@ class PayMethodController extends Controller
         $record = new PayMethodRecord();
         $record->pay_method_id = $pay_method->id;
         $record->payload = $request->all();
+
         $record->save();
         ProcessExternal::dispatch($record);
 

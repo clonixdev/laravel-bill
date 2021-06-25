@@ -2,30 +2,10 @@
 
 namespace Clonixdev\LaravelBill\Http\Controllers;
 
+use Clonixdev\LaravelBill\Models\Currency;
 
-
-class CurrencyController extends Controller
+class CurrencyController extends ApiBaseController
 {
 
-    public function index()
-    {
-        //
-    }
-
-    public function show()
-    {
-        //
-    }
-
-    public function store()
-    {
-
-
-    }
-
-    public function update()
-    {
-
-
-    }
+    protected $classname = Currency::class;
 }

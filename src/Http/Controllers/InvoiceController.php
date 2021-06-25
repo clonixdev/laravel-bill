@@ -4,18 +4,12 @@ namespace Clonixdev\LaravelBill\Http\Controllers;
 
 use Clonixdev\LaravelBill\Models\Invoice;
 
-class InvoiceController extends Controller
+class InvoiceController  extends ApiBaseController
 {
 
-    public function index()
-    {
-        //
-    }
+    protected $classname = Invoice::class;
 
-    public function show($id)
-    {
-        //
-    }
+  
 
     public function checkout($id)
     {
