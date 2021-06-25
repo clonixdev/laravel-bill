@@ -3,7 +3,7 @@
 namespace Clonixdev\LaravelBill;
 
 use Illuminate\Support\ServiceProvider;
-
+use Illuminate\Support\Facades\Route;
 class LaravelBillProvider extends ServiceProvider
 {
     public function boot(): void
