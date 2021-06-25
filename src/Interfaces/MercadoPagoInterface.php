@@ -1,7 +1,8 @@
 <?php
 
-namespace Clonixdev\LaravelBill\Models;
+namespace Clonixdev\LaravelBill\Interfaces;
 
+use Clonixdev\LaravelBill\Models\PayMethodInterface;
 use MercadoPago\SDK;
 use MercadoPago\Preference;
 use MercadoPago\Item;
