@@ -3,7 +3,6 @@
 
 namespace Clonixdev\LaravelBill\Models\Concerns;
 
-
 use Illuminate\Support\Str;
 
 trait UsesUuid
