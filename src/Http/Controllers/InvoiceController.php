@@ -20,12 +20,16 @@ class InvoiceController  extends ApiBaseController
 
         $invoice =  Invoice::where('id',$id)->first();
 
+
+        if(!$invoice){
+            abort(404);
+        }
         $pay_method = $invoice->payMethod;
 
         $client = auth()->user();
 
         if($pay_method->interface){
-            $return_callback = call_user_func($this->pay_method->interface .'::checkout',$invoice,$pay_method->params);
+            $return_callback = call_user_func($pay_method->interface .'::checkout',$invoice,$pay_method->params);
         }
 
 
