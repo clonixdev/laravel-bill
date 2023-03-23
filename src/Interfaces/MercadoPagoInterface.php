@@ -160,7 +160,9 @@ class MercadoPagoInterface extends PayMethodInterface
 
  
         $invoice_id = $merchant_order->external_reference;
-        $invoice = Invoice::where('id',$invoice_id)->first();
+
+        $invoice_class = config('bill.invoice_model');
+        $invoice = $invoice_class::where('id',$invoice_id)->first();
         if(!$invoice){
       
             return [ 'success' => false , 'message' => 'No existe la factura.'];
@@ -182,12 +184,12 @@ class MercadoPagoInterface extends PayMethodInterface
   
         // If the payment's transaction amount is equal (or bigger) than the merchant_order's amount you can release your items
         if ($paid_amount >= $merchant_order->total_amount) {
-            return [ 'success' => true , 'invoice_id' => $invoice_id , 'pay_status' => Invoice::PAY_STATUS_PAID , 'transaction' => $merchant_order->id ];
+            return [ 'success' => true , 'invoice_id' => $invoice_id , 'pay_status' => $invoice_class::PAY_STATUS_PAID , 'transaction' => $merchant_order->id ];
         } else {
             if ($cancel) {
-                return [ 'success' => true , 'invoice_id' => $invoice_id , 'pay_status' => Invoice::PAY_STATUS_REJECT , 'transaction' => $merchant_order->id ];
+                return [ 'success' => true , 'invoice_id' => $invoice_id , 'pay_status' => $invoice_class::PAY_STATUS_REJECT , 'transaction' => $merchant_order->id ];
             } else {
-                return [ 'success' => true , 'invoice_id' => $invoice_id , 'pay_status' => Invoice::PAY_STATUS_PENDING , 'transaction' => $merchant_order->id ];
+                return [ 'success' => true , 'invoice_id' => $invoice_id , 'pay_status' => $invoice_class::PAY_STATUS_PENDING , 'transaction' => $merchant_order->id ];
             }
         }
 

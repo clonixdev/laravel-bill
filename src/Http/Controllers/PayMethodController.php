@@ -9,8 +9,9 @@ use Clonixdev\LaravelBill\Models\PayMethodRecord;
 class PayMethodController extends ApiBaseController
 {
 
-    protected $classname = PayMethod::class;
-
+    function __construct() {
+        $this->classname = config('bill.pay_method_model');
+    }
 
 
 
@@ -24,8 +25,6 @@ class PayMethodController extends ApiBaseController
         $record->payload = $request->all();
 
         $record->save();
-
-        $pay_method_record_class = config('bill.pay_method_record_model');
 
         $process_external_class = config('bill.process_external_job');
 

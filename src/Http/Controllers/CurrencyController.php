@@ -7,5 +7,9 @@ use Clonixdev\LaravelBill\Models\Currency;
 class CurrencyController extends ApiBaseController
 {
 
-    protected $classname = Currency::class;
+    function __construct() {
+        $this->classname = config('bill.currency_model');
+    }
+
+
 }

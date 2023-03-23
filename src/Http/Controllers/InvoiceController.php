@@ -7,9 +7,11 @@ use Clonixdev\LaravelBill\Models\Invoice;
 class InvoiceController  extends ApiBaseController
 {
 
-    protected $classname = Invoice::class;
 
-  
+    function __construct() {
+        $this->classname = config('bill.invoice_model');
+    }
+
 
     public function checkout($id)
     {
