@@ -28,7 +28,7 @@ class ProcessExternal implements ShouldQueue
      
         if($this->record->pay_method->interface){
 
-            $return_callback = call_user_func($this->pay_method->interface .'::onMessage',$this->record,$this->request);
+            $return_callback = call_user_func($this->record->pay_method->interface .'::onMessage',$this->record,$this->request);
 
             $this->record->interface_result = $return_callback;
             $this->record->status = PayMethodRecord::STATUS_PROCESSED;

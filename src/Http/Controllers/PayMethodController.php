@@ -15,15 +15,21 @@ class PayMethodController extends ApiBaseController
 
 
     public function externalLink($id){
-        $pay_method = PayMethod::where('id',$id)->first();
+        $pay_method = $this->classname::where('id',$id)->first();
         $request = request();
 
-        $record = new PayMethodRecord();
+        $pay_method_record_class = config('bill.pay_method_record_model');
+        $record = new $pay_method_record_class();
         $record->pay_method_id = $pay_method->id;
         $record->payload = $request->all();
 
         $record->save();
-        ProcessExternal::dispatch($record,$request);
+
+        $pay_method_record_class = config('bill.pay_method_record_model');
+
+        $process_external_class = config('bill.process_external_job');
+
+        $process_external_class::dispatch($record,$request);
 
     }
 }

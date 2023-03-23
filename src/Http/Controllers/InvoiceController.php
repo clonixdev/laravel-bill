@@ -18,7 +18,7 @@ class InvoiceController  extends ApiBaseController
             abort (403, 'Only authenticated users can checkout invoices.');
         }
 
-        $invoice =  Invoice::where('id',$id)->first();
+        $invoice =  $this->classname::where('id',$id)->first();
 
 
         if(!$invoice){

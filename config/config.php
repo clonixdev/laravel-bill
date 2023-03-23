@@ -15,5 +15,6 @@ return [
 
     'default_interface' => 'Clonixdev\LaravelBill\Models\PayMethodInterface',
 
+    'process_external_job' => 'Clonixdev\LaravelBill\Jobs\ProcessExternal',    'process_external_job' => 'Clonixdev\LaravelBill\Jobs\ProcessExternal',
 
 ];
