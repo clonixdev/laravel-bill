@@ -12,27 +12,30 @@ class ApiBaseController extends Controller
 
     public function index()
     {
-
         $query = $this->classname::orderByDesc('id');
         $this->filter($query);
         return $this->results($query);
     }
 
 
-    public function show($id)
+    public function show()
     {
         $request = request();
+        $id = $request->id;
         return $this->classname::where('id',$id)->firstOrFail();
     }
 
-    public function destroy($id)
+    public function destroy()
     {
+        $request = request();
+        $id = $request->id;
         return $this->classname::where('id',$id)->delete();
     }
 
-    public function update($id)
+    public function update()
     {
         $request = request();
+        $id = $request->id;
         $model = $this->classname::findOrFail($id);
         $model->update($request->all());
         return $model;
@@ -42,8 +45,6 @@ class ApiBaseController extends Controller
     {
         $request = request();
         $values = $request->all();
-
-        // dd($values,$request_values,  $modified_values );
         return $this->classname::create($values);
     }
 
@@ -58,10 +59,7 @@ class ApiBaseController extends Controller
         $request = request();
         $request_filters = $request->filters;
         if ($request_filters) {
-
-
             $filters = json_decode($request_filters);
-
             if (defined($this->classname . '::SEARCH_COLUMNS') && $this->classname::SEARCH_COLUMNS != null) {
                 $this->filterFromArray($query, $filters, $this->classname::SEARCH_COLUMNS);
             } else {
@@ -70,19 +68,14 @@ class ApiBaseController extends Controller
         }
     }
 
-
-    public function filterFromArray($query, $filters, $searchColumns = ['name'])
+    protected function filterFromArray($query, $filters, $searchColumns = ['name'])
     {
-
-
 
         if (!is_array($filters)) return;
         foreach ($filters as $filter) {
             $column = $filter[0];
             $operator = $filter[1];
             $value = $filter[2];
-
-
             if ($column == "search") {
                 $query->where(function ($query) use ($value, $searchColumns) {
                     $i = 0;
@@ -119,9 +112,5 @@ class ApiBaseController extends Controller
             }
         }
     }
-
-
-
-
 
 }

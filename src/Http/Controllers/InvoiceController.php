@@ -13,28 +13,22 @@ class InvoiceController  extends ApiBaseController
     }
 
 
-    public function checkout($id)
+    public function checkout()
     {
-
+        $request = request();
+        $id = $request->id;
         if (! auth()->check()) {
             abort (403, 'Only authenticated users can checkout invoices.');
         }
-
         $invoice =  $this->classname::where('id',$id)->first();
-
-
         if(!$invoice){
-            abort(404);
+            abort(404,'Invalid invoice.');
         }
         $pay_method = $invoice->payMethod;
-
         $client = auth()->user();
-
         if($pay_method->interface){
             $return_callback = call_user_func($pay_method->interface .'::checkout',$invoice,$pay_method->params);
         }
-
-
         return ['success' => true];
     }
 
