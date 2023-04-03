@@ -34,7 +34,7 @@ class ProcessExternal implements ShouldQueue
             $return_callback = call_user_func($this->pay_method->adapter_class .'::onMessage',$this->request,$this->pay_method,$this->record);
 
             if(isset($return_callback['payment_id'])){
-                $payment_class = config('bill.payment_model');
+                $payment_class = config('bill.models.payment');
                 $payment = $payment_class::where('id',$return_callback['payment_id'])->first();
                 if($payment) {
                     $payment->adapter_result = $return_callback;

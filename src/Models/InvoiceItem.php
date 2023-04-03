@@ -9,7 +9,7 @@ class InvoiceItem extends Model
     
     public function invoice()
     {
-        return $this->belongsTo(config('bill.invoice_model'));
+        return $this->belongsTo(config('bill.models.invoice'));
     }
 
 }

@@ -34,32 +34,32 @@ class Invoice extends Model
 
     public function order()
     {
-        return $this->belongsTo(config('bill.order_model'));
+        return $this->belongsTo(config('bill.models.order'));
     }
 
     public function user()
     {
-        return $this->belongsTo(config('bill.user_model'));
+        return $this->belongsTo(config('bill.models.user'));
     }
 
     public function payMethod()
     {
-        return $this->belongsTo(config('bill.pay_method_model'));
+        return $this->belongsTo(config('bill.models.pay_method'));
     }
 
     public function payments()
     {
-        return $this->hasMany(config('bill.payment_model'));
+        return $this->hasMany(config('bill.models.payment'));
     }
 
     public function payMethodRecords()
     {
-        return $this->hasMany(config('bill.pay_method_record_model'));
+        return $this->hasMany(config('bill.models.pay_method_record'));
     }
     
     public function currency()
     {
-        return $this->belongsTo(config('bill.currency_model'));
+        return $this->belongsTo(config('bill.models.currency'));
     }
 
     public function calculateShipping()

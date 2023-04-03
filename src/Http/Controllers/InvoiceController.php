@@ -9,7 +9,7 @@ class InvoiceController  extends ApiBaseController
 
 
     function __construct() {
-        $this->classname = config('bill.invoice_model');
+        $this->classname = config('bill.models.invoice');
     }
 
 
@@ -32,7 +32,7 @@ class InvoiceController  extends ApiBaseController
 
 
 
-        $payment_class = config('bill.payment_model');
+        $payment_class = config('bill.models.payment');
 
         $payment = new $payment_class();
         $payment->pay_method_id = $pay_method->id;

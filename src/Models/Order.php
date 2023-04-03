@@ -17,22 +17,22 @@ class Order extends Model
 
     public function items()
     {
-        return $this->hasMany(config('bill.order_item_model'));
+        return $this->hasMany(config('bill.models.order_item'));
     }
 
     public function user()
     {
-        return $this->belongsTo(config('bill.user_model'));
+        return $this->belongsTo(config('bill.models.user'));
     }
 
     public function payMethod()
     {
-        return $this->belongsTo(config('bill.pay_method_model'));
+        return $this->belongsTo(config('bill.models.pay_method'));
     }
     
     public function currency()
     {
-        return $this->belongsTo(config('bill.currency_model'));
+        return $this->belongsTo(config('bill.models.currency'));
     }
 
     public function calculateShipping()

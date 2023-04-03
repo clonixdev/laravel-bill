@@ -42,7 +42,7 @@ class PayMethodAdapter
     }
 
     public static function getPayment($payment_id){
-        $payment_class = config('bill.payment_model');
+        $payment_class = config('bill.models.payment');
         $payment = $payment_class::where('id',$payment_id)->first();
         if(!$payment) return;
 
@@ -50,7 +50,7 @@ class PayMethodAdapter
     }
 
     public static function saveRequest($record,$request){
-        $pay_method_record_class = config('bill.pay_method_record_model');
+        $pay_method_record_class = config('bill.models.pay_method_record');
         if(!$record) return;
         $record->payload_in = json_encode($request->all());
         $record->status = $pay_method_record_class::STATUS_INCOMING;

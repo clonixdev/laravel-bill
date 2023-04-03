@@ -179,7 +179,7 @@ class MercadoPagoAdapter extends PayMethodAdapter
 
         $invoice_id = $record->invoice_id;
 
-        $invoice_class = config('bill.invoice_model');
+        $invoice_class = config('bill.models.invoice');
         $invoice = $invoice_class::where('id',$invoice_id)->first();
         if(!$invoice){
       

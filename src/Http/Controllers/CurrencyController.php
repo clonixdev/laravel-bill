@@ -8,7 +8,7 @@ class CurrencyController extends ApiBaseController
 {
 
     function __construct() {
-        $this->classname = config('bill.currency_model');
+        $this->classname = config('bill.models.currency');
     }
 
 

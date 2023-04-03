@@ -10,7 +10,7 @@ class PayMethodController extends ApiBaseController
 {
 
     function __construct() {
-        $this->classname = config('bill.pay_method_model');
+        $this->classname = config('bill.models.pay_method');
     }
 
 
@@ -20,7 +20,7 @@ class PayMethodController extends ApiBaseController
         $id = $request->id;
         $pay_method = $this->classname::where('id',$id)->first();
         $request = request();
-        $pay_method_record_class = config('bill.pay_method_record_model');
+        $pay_method_record_class = config('bill.models.pay_method_record');
 
 
         $record = new $pay_method_record_class();

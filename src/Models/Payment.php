@@ -20,16 +20,16 @@ class Payment extends Model
 
     public function payMethod()
     {
-        return $this->belongsTo(config('bill.pay_method_model'));
+        return $this->belongsTo(config('bill.models.pay_method'));
     }
 
     public function invoice()
     {
-        return $this->belongsTo(config('bill.invoice_model'));
+        return $this->belongsTo(config('bill.models.invoice'));
     }
 
     public function payMethodRecords()
     {
-        return $this->hasMany(config('bill.pay_method_record_model'));
+        return $this->hasMany(config('bill.models.pay_method_record'));
     }
 }

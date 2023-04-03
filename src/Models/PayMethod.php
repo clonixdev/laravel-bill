@@ -8,7 +8,7 @@ class PayMethod extends Model
 {
     public function currency()
     {
-        return $this->belongsTo(config('bill.currency_model'));
+        return $this->belongsTo(config('bill.models.currency'));
     }
 
 

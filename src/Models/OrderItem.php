@@ -9,7 +9,7 @@ class OrderItem extends Model
     
     public function order()
     {
-        return $this->belongsTo(config('bill.order_model'));
+        return $this->belongsTo(config('bill.models.order'));
     }
 
 }

@@ -35,17 +35,21 @@ class LaravelBillProvider extends ServiceProvider
 
     protected function registerRoutes()
     {
+
+      if(config('bill.routes.register',true)) {
         Route::group($this->routeConfiguration(), function () {
             $this->loadRoutesFrom(__DIR__.'/routes/web.php');
         });
+      }
+
     }
 
 
     protected function routeConfiguration()
     {
         return [
-            'prefix' => config('bill.prefix'),
-            'middleware' => config('bill.middleware'),
+            'prefix' => config('bill.routes.prefix'),
+            'middleware' => config('bill.routes.middleware'),
         ];
     }
 
