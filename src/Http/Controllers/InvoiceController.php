@@ -44,11 +44,11 @@ class InvoiceController  extends ApiBaseController
   
 
 
-        if($pay_method->interface){
-            $return_callback = call_user_func($pay_method->interface .'::checkout',$invoice,$pay_method->params,$payment);
+        if($pay_method->adapter_class){
+            $return_callback = call_user_func($pay_method->adapter_class .'::checkout',$invoice,$pay_method->params,$payment);
             return ['success' => true , 'callback' => $return_callback ];
         }else{
-            abort(400,'Invalid interface.');
+            abort(400,'Invalid Adapter class.');
         }
     
     }

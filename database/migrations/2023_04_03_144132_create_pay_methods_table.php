@@ -19,7 +19,7 @@ class CreatePayMethodsTable extends Migration
             $table->text('description')->nullable();
             $table->integer('status')->unsigned()->default(1);
             $table->text('params')->nullable();
-            $table->string('interface')->nullable();
+            $table->string('adapter_class')->nullable();
             $table->bigInteger('currency_id')->unsigned()->nullable();
             $table->timestamps();
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Clonixdev\LaravelBill\Interfaces;
+namespace Clonixdev\LaravelBill\PayMethodAdapters;
 
 use Clonixdev\LaravelBill\Models\PayMethodAdapter;
 use MercadoPago\SDK;
