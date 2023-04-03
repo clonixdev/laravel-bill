@@ -2,10 +2,6 @@
 
 namespace Clonixdev\LaravelBill\Http\Controllers;
 
-use Clonixdev\LaravelBill\Jobs\ProcessExternal;
-use Clonixdev\LaravelBill\Models\PayMethod;
-use Clonixdev\LaravelBill\Models\PayMethodRecord;
-
 class PayMethodController extends ApiBaseController
 {
 

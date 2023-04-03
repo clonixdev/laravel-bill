@@ -2,8 +2,6 @@
 
 namespace Clonixdev\LaravelBill\Http\Controllers;
 
-use Clonixdev\LaravelBill\Models\Invoice;
-
 class InvoiceController  extends ApiBaseController
 {
 

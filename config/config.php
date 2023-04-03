@@ -22,7 +22,4 @@ return [
         'process_external_job' => 'Clonixdev\LaravelBill\Jobs\ProcessExternal', 
     ],
 
-
-
-
 ];

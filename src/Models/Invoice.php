@@ -70,6 +70,23 @@ class Invoice extends Model
         return 0; // NO SHIPPING
     }
 
+    public static function createFromOrder($order){
+
+        $invoice = new self();
+        $invoice->fill($order->getAttributes());
+        $invoice->save();
+        $order_items = $order->items;
+        $invoice_item_class = config('bill.invoice_item_model');
+        foreach($order_items as $order_item){
+            $invoice_item = new  $invoice_item_class();
+            $invoice_item->fill($order_item->getAttributes());
+            $invoice_item->invoice_id = $invoice->id;
+            $invoice_item->save();
+        }
+
+        return $invoice;
+    }
+
 
 
 }
