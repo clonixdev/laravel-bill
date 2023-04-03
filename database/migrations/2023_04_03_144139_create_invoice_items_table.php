@@ -18,12 +18,14 @@ class CreateInvoiceItemsTable extends Migration
             $table->uuid('invoice_id')->nullable();
             $table->integer('tax_type')->unsigned()->nullable();
             $table->string('description');
-            $table->double('qty')->nullable();
+            $table->double('qty',14)->nullable();
             $table->string('unit')->nullable();
-            $table->double('price')->nullable();
-            $table->double('amount');
-            $table->double('tax');
+            $table->double('price',14)->nullable();
+            $table->double('amount',14);
+            $table->double('tax',14);
             $table->timestamps();
+
+            $table->foreign('invoice_id')->references('id')->on('invoices')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

@@ -14,26 +14,34 @@ class ProcessExternal implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
 
-    public $record;
+    public $pay_method;
     public $request;
+    public $record;
 
-    public function __construct($record,$request)
+    public function __construct($request,$pay_method,$record)
     {
-        $this->record = $record;
+        $this->pay_method = $pay_method;
         $this->request = $request;
+        $this->record = $record;
     }
 
     public function handle()
     {
      
-        if($this->record->pay_method->interface){
 
-            $return_callback = call_user_func($this->record->pay_method->interface .'::onMessage',$this->record,$this->request);
-            $pay_method_record_class = config('bill.pay_method_record_model');
-            $this->record->interface_result = $return_callback;
-            $this->record->status = $pay_method_record_class::STATUS_PROCESSED;
-            $this->record->save();
+        if($this->pay_method->interface){
 
+            $return_callback = call_user_func($this->pay_method->interface .'::onMessage',$this->request,$this->pay_method,$this->record);
+
+            if(isset($return_callback['payment_id'])){
+                $payment_class = config('bill.payment_model');
+                $payment = $payment_class::where('id',$return_callback['payment_id'])->first();
+                if($payment) {
+                    $payment->interface_result = $return_callback;
+                    $payment->status = $payment_class::STATUS_PROCESSED;
+                    $payment->save();
+                }
+            }
         }
     }
 }

@@ -4,7 +4,7 @@ namespace Clonixdev\LaravelBill\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Invoice extends Model
+class Order extends Model
 {
     use \Clonixdev\LaravelBill\Models\Concerns\UsesUuid;
 
@@ -12,29 +12,12 @@ class Invoice extends Model
     public $incrementing = false;
 
     const STATUS_PENDING = 1;
-    const STATUS_PAID = 2;
+    const STATUS_BILLED = 2;
     const STATUS_REJECT = 3;
-    const STATUS_SHIPPING = 4;
-    const STATUS_FINISHED = 5;
-
-    const PAY_STATUS_PENDING = 1;
-    const PAY_STATUS_PAID = 2;
-    const PAY_STATUS_REJECT = 3;
-
-    const SHIP_STATUS_NO_SHIPPING = 0;
-    const SHIP_STATUS_PENDING = 1;
-    const SHIP_STATUS_DISPATCHING = 2;
-    const SHIP_STATUS_SENT = 3;
-    const SHIP_STATUS_DELIVERED = 4;
 
     public function items()
     {
-        return $this->hasMany(config('bill.invoice_item_model'));
-    }
-
-    public function order()
-    {
-        return $this->belongsTo(config('bill.order_model'));
+        return $this->hasMany(config('bill.order_item_model'));
     }
 
     public function user()
@@ -45,16 +28,6 @@ class Invoice extends Model
     public function payMethod()
     {
         return $this->belongsTo(config('bill.pay_method_model'));
-    }
-
-    public function payments()
-    {
-        return $this->hasMany(config('bill.payment_model'));
-    }
-
-    public function payMethodRecords()
-    {
-        return $this->hasMany(config('bill.pay_method_record_model'));
     }
     
     public function currency()

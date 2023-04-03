@@ -14,14 +14,19 @@ class CreatePayMethodRecordsTable extends Migration
     public function up()
     {
         Schema::create('pay_method_records', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->bigInteger('pay_method_id')->unsigned()->nullable();
-            $table->bigInteger('invoice_id')->unsigned()->nullable();
+            $table->uuid('invoice_id')->nullable();
+            $table->uuid('payment_id')->nullable();
             $table->integer('status')->unsigned()->nullable();
             $table->text('payload')->nullable();
             $table->string('comments')->nullable();
-            $table->text('interface_result')->nullable();
+            $table->text('adapter_result')->nullable();
             $table->timestamps();
+
+            $table->foreign('pay_method_id')->references('id')->on('pay_methods')->onDelete('set null')->onUpdate('cascade');
+            $table->foreign('invoice_id')->references('id')->on('invoices')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('payment_id')->references('id')->on('payments')->onDelete('set null')->onUpdate('cascade');
         });
     }
 

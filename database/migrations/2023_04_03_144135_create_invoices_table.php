@@ -47,13 +47,11 @@ class CreateInvoicesTable extends Migration
             $table->integer('pay_status')->unsigned()->nullable();
             $table->integer('ship_status')->unsigned()->nullable();
 
-            $table->double('sub_total')->nullable();
-            $table->double('tax')->nullable();
-            $table->double('ship')->nullable();
-            $table->double('total')->nullable();
+            $table->double('sub_total',14)->nullable();
+            $table->double('tax',14)->nullable();
+            $table->double('ship',14)->nullable();
+            $table->double('total',14)->nullable();
          
-
-
 
             $table->decimal('ship_lat', 10, 8)->nullable();
             $table->decimal('ship_lng', 11, 8)->nullable();
@@ -69,11 +67,17 @@ class CreateInvoicesTable extends Migration
 
             $table->boolean('is_subscription')->default(0);
             $table->boolean('has_shipping')->default(0);
-            $table->bigInteger('currency_id')->unsigned();
+            $table->bigInteger('currency_id')->unsigned()->nullable();
             $table->bigInteger('pay_method_id')->unsigned()->nullable();
+            $table->uuid('order_id')->nullable();
             $table->bigInteger('user_id')->unsigned()->nullable();
             $table->text('comments')->nullable();
             $table->timestamps();
+
+            $table->foreign('order_id')->references('id')->on('orders')->onDelete('set null')->onUpdate('cascade');
+            $table->foreign('currency_id')->references('id')->on('currencies')->onDelete('set null')->onUpdate('cascade');
+            $table->foreign('pay_method_id')->references('id')->on('pay_methods')->onDelete('set null')->onUpdate('cascade');
+
         });
     }
 

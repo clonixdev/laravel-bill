@@ -2,12 +2,12 @@
 
 namespace Clonixdev\LaravelBill\Interfaces;
 
-use Clonixdev\LaravelBill\Models\PayMethodInterface;
+use Clonixdev\LaravelBill\Models\PayMethodAdapter;
 use MercadoPago\SDK;
 use MercadoPago\Preference;
 use MercadoPago\Item;
 
-class MercadoPagoInterface extends PayMethodInterface 
+class MercadoPagoAdapter extends PayMethodAdapter 
 {
     
 
@@ -38,7 +38,7 @@ class MercadoPagoInterface extends PayMethodInterface
         Return:
         - 
     */
-    public static function checkout($invoice,$params){
+    public static function checkout($invoice,$params,$payment){
 
         $pay_method = $invoice->payMethod;
         $config = $pay_method->getConfig();
@@ -75,7 +75,7 @@ class MercadoPagoInterface extends PayMethodInterface
           ); */
 
 
-        $preference->external_reference = $invoice->id;
+        $preference->external_reference = $payment->id;
         $preference->notification_url = route('pay-method.external-link');
         $preference->back_urls = array(
             "success" => route('invoices.show'),
@@ -95,6 +95,9 @@ class MercadoPagoInterface extends PayMethodInterface
 
 
         $preference->save(); # Save the preference and send the HTTP Request to create
+
+        $payment->payload_out = json_encode($preference->toArray());
+        $payment->save();
         if ($config->sandbox) {
             return $preference->sandbox_init_point;
         }
@@ -111,15 +114,13 @@ class MercadoPagoInterface extends PayMethodInterface
         Return:
         - [ 'status' => 1 | 2 | 3 , 'transaction' => 'XXXXXXX' ]
     */
-    public static function onMessage($record,$request){
+    public static function onMessage($request,$pay_method,$record){
 
-
-        $payMethod = $record->payMethod;
 
 
 
         $merchant_order = null;
-        $config = $payMethod->getConfig();
+        $config = $pay_method->getConfig();
         SDK::setAccessToken($config->access_token);
 
 
@@ -135,6 +136,7 @@ class MercadoPagoInterface extends PayMethodInterface
         }
 
         $request_data_id = $request->data_id;
+       
 
         switch ($type) {
 
@@ -159,13 +161,29 @@ class MercadoPagoInterface extends PayMethodInterface
 
 
  
-        $invoice_id = $merchant_order->external_reference;
+        $payment_id = $merchant_order->external_reference;
+
+       $payment = self::getPayment($payment_id);
+       
+
+       if(!$payment){
+      
+        return [ 'success' => false , 'message' => 'No existe el registro de pago.', 'payment_id' => $payment_id];
+    }
+
+
+        if(!$record){
+      
+            return [ 'success' => false , 'message' => 'No existe el registro.', 'payment_id' => $payment_id];
+        }
+
+        $invoice_id = $record->invoice_id;
 
         $invoice_class = config('bill.invoice_model');
         $invoice = $invoice_class::where('id',$invoice_id)->first();
         if(!$invoice){
       
-            return [ 'success' => false , 'message' => 'No existe la factura.'];
+            return [ 'success' => false , 'message' => 'No existe la factura.', 'payment_id' => $payment_id];
         }
     
 
@@ -184,12 +202,12 @@ class MercadoPagoInterface extends PayMethodInterface
   
         // If the payment's transaction amount is equal (or bigger) than the merchant_order's amount you can release your items
         if ($paid_amount >= $merchant_order->total_amount) {
-            return [ 'success' => true , 'invoice_id' => $invoice_id , 'pay_status' => $invoice_class::PAY_STATUS_PAID , 'transaction' => $merchant_order->id ];
+            return [ 'success' => true , 'payment_id' => $payment_id ,'invoice_id' => $invoice_id , 'pay_status' => $invoice_class::PAY_STATUS_PAID , 'transaction' => $merchant_order->id ];
         } else {
             if ($cancel) {
-                return [ 'success' => true , 'invoice_id' => $invoice_id , 'pay_status' => $invoice_class::PAY_STATUS_REJECT , 'transaction' => $merchant_order->id ];
+                return [ 'success' => true , 'payment_id' => $payment_id, 'invoice_id' => $invoice_id , 'pay_status' => $invoice_class::PAY_STATUS_REJECT , 'transaction' => $merchant_order->id ];
             } else {
-                return [ 'success' => true , 'invoice_id' => $invoice_id , 'pay_status' => $invoice_class::PAY_STATUS_PENDING , 'transaction' => $merchant_order->id ];
+                return [ 'success' => true , 'payment_id' => $payment_id, 'invoice_id' => $invoice_id , 'pay_status' => $invoice_class::PAY_STATUS_PENDING , 'transaction' => $merchant_order->id ];
             }
         }
 

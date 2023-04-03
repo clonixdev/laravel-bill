@@ -22,14 +22,35 @@ class InvoiceController  extends ApiBaseController
         }
         $invoice =  $this->classname::where('id',$id)->first();
         if(!$invoice){
-            abort(404,'Invalid invoice.');
+            abort(400,'Invalid invoice.');
         }
         $pay_method = $invoice->payMethod;
-        $client = auth()->user();
-        if($pay_method->interface){
-            $return_callback = call_user_func($pay_method->interface .'::checkout',$invoice,$pay_method->params);
+        if(!$pay_method){
+            abort(400,'Invalid pay method.');
         }
-        return ['success' => true];
+        $client = auth()->user();
+
+
+
+        $payment_class = config('bill.payment_model');
+
+        $payment = new $payment_class();
+        $payment->pay_method_id = $pay_method->id;
+        $payment->invoice_id = $id;
+        $payment->status = $payment_class::STATUS_PENDING;
+        $payment->pay_status = $payment_class::PAY_STATUS_PENDING;
+        $payment->save();
+
+  
+
+
+        if($pay_method->interface){
+            $return_callback = call_user_func($pay_method->interface .'::checkout',$invoice,$pay_method->params,$payment);
+            return ['success' => true , 'callback' => $return_callback ];
+        }else{
+            abort(400,'Invalid interface.');
+        }
+    
     }
 
 

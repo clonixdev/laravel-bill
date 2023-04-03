@@ -22,6 +22,8 @@ class CreatePayMethodsTable extends Migration
             $table->string('interface')->nullable();
             $table->bigInteger('currency_id')->unsigned()->nullable();
             $table->timestamps();
+
+            $table->foreign('currency_id')->references('id')->on('currencies')->onDelete('set null')->onUpdate('cascade');
         });
     }
 
