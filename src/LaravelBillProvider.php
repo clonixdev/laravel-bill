@@ -13,12 +13,13 @@ class LaravelBillProvider extends ServiceProvider
             // Export the migration
             if (! class_exists('CreateInvoicesTable')) {
               $this->publishes([
-                __DIR__ . '/../database/migrations/2021_04_30_094108_create_invoices_table.php' => database_path('migrations/2021_04_30_094108_create_invoices_table.php'),
-                __DIR__ . '/../database/migrations/2021_04_30_094130_create_invoice_items_table.php' => database_path('migrations/2021_04_30_094130_create_invoice_items_table.php'),
-                __DIR__ . '/../database/migrations/2021_04_30_094154_create_pay_methods_table.php' => database_path('migrations/2021_04_30_094154_create_pay_methods_table.php'),
-                __DIR__ . '/../database/migrations/2021_04_30_094155_create_pay_method_records_table.php' => database_path('migrations/2021_04_30_094155_create_pay_method_records_table.php'),
-                __DIR__ . '/../database/migrations/2021_04_30_094156_create_currencies_table.php' => database_path('migrations/2021_04_30_094156_create_currencies_table.php'),
-                __DIR__ . '/../database/migrations/2021_04_30_094157_create_payment_table.php' => database_path('migrations/2021_04_30_094157_create_payment_table.php'),
+                __DIR__ . '/../database/migrations/2023_04_03_144131_create_currencies_table.php' => database_path('migrations/2023_04_03_144131_create_currencies_table'),
+                __DIR__ . '/../database/migrations/2023_04_03_144132_create_pay_methods_table.php' => database_path('migrations/2023_04_03_144132_create_pay_methods_table.php'),
+                __DIR__ . '/../database/migrations/2023_04_03_144134_create_orders_table.php' => database_path('migrations/2023_04_03_144134_create_orders_table.php'),
+                __DIR__ . '/../database/migrations/2023_04_03_144135_create_invoices_table.php' => database_path('migrations/2023_04_03_144135_create_invoices_table.php'),
+                __DIR__ . '/../database/migrations/2023_04_03_144137_create_pay_method_records_table.php' => database_path('migrations/2023_04_03_144137_create_pay_method_records_table.php'),
+                __DIR__ . '/../database/migrations/2023_04_03_144139_create_invoice_items_table.php' => database_path('migrations/2023_04_03_144139_create_invoice_items_table.php'),
+                __DIR__ . '/../database/migrations/2023_04_03_144140_create_order_items_table.php' => database_path('migrations/2023_04_03_144140_create_order_items_table.php'),
                 // you can add any number of migrations here
               ], 'migrations');    
               
