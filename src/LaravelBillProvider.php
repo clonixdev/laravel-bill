@@ -17,7 +17,7 @@ class LaravelBillProvider extends ServiceProvider
                 __DIR__ . '/../database/migrations/2023_04_03_144132_create_pay_methods_table.php' => database_path('migrations/2023_04_03_144132_create_pay_methods_table.php'),
                 __DIR__ . '/../database/migrations/2023_04_03_144134_create_orders_table.php' => database_path('migrations/2023_04_03_144134_create_orders_table.php'),
                 __DIR__ . '/../database/migrations/2023_04_03_144135_create_invoices_table.php' => database_path('migrations/2023_04_03_144135_create_invoices_table.php'),
-                __DIR__ . '/../database/migrations/2023_04_03_144136_create_payment_table.php' => database_path('migrations/2023_04_03_144136_create_payment_table.php'),
+                __DIR__ . '/../database/migrations/2023_04_03_144136_create_payments_table.php' => database_path('migrations/2023_04_03_144136_create_payments_table.php'),
                 __DIR__ . '/../database/migrations/2023_04_03_144137_create_pay_method_records_table.php' => database_path('migrations/2023_04_03_144137_create_pay_method_records_table.php'),
                 __DIR__ . '/../database/migrations/2023_04_03_144139_create_invoice_items_table.php' => database_path('migrations/2023_04_03_144139_create_invoice_items_table.php'),
                 __DIR__ . '/../database/migrations/2023_04_03_144140_create_order_items_table.php' => database_path('migrations/2023_04_03_144140_create_order_items_table.php'),

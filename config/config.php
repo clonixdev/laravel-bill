@@ -18,6 +18,7 @@ return [
         'order_item' => 'Clonixdev\LaravelBill\Models\OrderItem',
         'pay_method' => 'Clonixdev\LaravelBill\Models\PayMethod',
         'pay_method_record' => 'Clonixdev\LaravelBill\Models\PayMethodRecord',
+        'payment' => 'Clonixdev\LaravelBill\Models\Payment',
         'default_interface' => 'Clonixdev\LaravelBill\Models\PayMethodInterface',
         'process_external_job' => 'Clonixdev\LaravelBill\Jobs\ProcessExternal', 
     ],

@@ -27,6 +27,12 @@ class Invoice extends Model
     const SHIP_STATUS_SENT = 3;
     const SHIP_STATUS_DELIVERED = 4;
 
+
+    protected $attributes = [
+        'status' => self::STATUS_PENDING,
+    ];
+
+
     public function items()
     {
         return $this->hasMany(config('bill.invoice_item_model'));
