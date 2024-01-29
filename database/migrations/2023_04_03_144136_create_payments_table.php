@@ -21,6 +21,7 @@ class CreatePaymentsTable extends Migration
             $table->integer('pay_status')->unsigned()->nullable();
             $table->string('comments')->nullable();
             $table->text('adapter_result')->nullable();
+            $table->text('payload_out')->nullable();
             $table->timestamps();
 
             $table->foreign('pay_method_id')->references('id')->on('pay_methods')->onDelete('set null')->onUpdate('cascade');
