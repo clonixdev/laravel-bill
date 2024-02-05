@@ -33,9 +33,67 @@ class Invoice extends Model
     ];
 
 
+    protected $fillable = [
+        "seller_name" ,
+        "seller_last_name" ,
+        "seller_tax_id" ,
+        "seller_email" ,
+        "seller_phone" ,
+        "seller_address" ,
+        "seller_city" ,
+        "seller_state" ,
+        "seller_country" ,
+        "buyer_name" ,
+        "buyer_last_name" ,
+        "buyer_tax_id" ,
+        "buyer_email",
+        "buyer_phone" ,
+        "buyer_address",
+        "buyer_city" ,
+        "buyer_state" ,
+        "buyer_country" ,
+        "status" ,
+        "sub_total",
+        "tax" ,
+        "ship" ,
+        "total" ,
+        "invoice_date" ,
+        "invoice_date_range" ,
+        "expire_at" ,
+        "currency_id" ,
+        "pay_method_id" ,
+        "order_id" ,
+        "comments" ,
+        "record_id",
+    ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::saving(function ($invoice) {
+            $invoice->calculate();
+        });
+
+        static::updated(function ($invoice) {
+           /* if ($invoice->isDirty('status')) {
+                $oldStatus = $invoice->getOriginal('status');
+                $newStatus = $invoice->getAttribute('status');
+                if ($newStatus === self::STATUS_PAID ) {
+                    InvoicePaid::dispatch($invoice);
+                }else  if ($newStatus === self::STATUS_REJECT ) {
+                    InvoiceCancelled::dispatch($invoice);
+
+                }
+            }*/
+        });
+
+    }
+
+
     public function items()
     {
-        return $this->hasMany(config('bill.invoice_item_model'));
+        return $this->hasMany(config('bill.models.invoice_item'));
     }
 
     public function order()
@@ -93,6 +151,27 @@ class Invoice extends Model
         return $invoice;
     }
 
+    public function calculate(){
 
+
+        $items = $this->items;
+
+        $total = 0;
+        $sub_total = 0;
+        $tax = 0;
+
+        foreach($items as $item){
+            $sub_total += $item->amount;
+            $tax += $tax;
+
+        }
+
+        $total = $sub_total + $tax;
+
+        $this->total = $total;
+        $this->sub_total = $sub_total;
+        $this->tax = $tax;
+
+    }
 
 }

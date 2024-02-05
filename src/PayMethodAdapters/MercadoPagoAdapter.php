@@ -76,7 +76,7 @@ class MercadoPagoAdapter extends PayMethodAdapter
 
 
         $preference->external_reference = $payment->id;
-        $preference->notification_url = route('pay-method.external-link');
+        $preference->notification_url = route('pay-method.external-link',['pay_method_id' => $pay_method->id]);
         $preference->back_urls = array(
             "success" => route('invoices.show'),
             "failure" => route('invoices.show'),
@@ -161,54 +161,58 @@ class MercadoPagoAdapter extends PayMethodAdapter
 
 
  
+        if(!$merchant_order){
+            return [ 'success' => false , 'message' => 'Merchant order invalid.', 'order_id' => $request["id"]];
+        }
+
+
         $payment_id = $merchant_order->external_reference;
 
        $payment = self::getPayment($payment_id);
-       
+
 
        if(!$payment){
-      
-        return [ 'success' => false , 'message' => 'No existe el registro de pago.', 'payment_id' => $payment_id];
-    }
 
-
-        if(!$record){
-      
-            return [ 'success' => false , 'message' => 'No existe el registro.', 'payment_id' => $payment_id];
+            return [ 'success' => false , 'message' => 'No existe el registro de pago.', 'payment_id' => $payment_id];
         }
 
-        $invoice_id = $record->invoice_id;
+        $invoice_id = $payment->invoice_id;
+
+
+        $record->invoice_id = $invoice_id;
+
 
         $invoice_class = config('bill.models.invoice');
         $invoice = $invoice_class::where('id',$invoice_id)->first();
         if(!$invoice){
-      
-            return [ 'success' => false , 'message' => 'No existe la factura.', 'payment_id' => $payment_id];
-        }
-    
 
-        $cancel = false;
-        $paid_amount = 0;
-        if($merchant_order && $merchant_order->payments && is_array($merchant_order->payments)){
-            foreach ($merchant_order->payments as $payment) {
-                if ($payment->status == 'approved') {
-                    $paid_amount += $payment->transaction_amount;
-                }
-                if ($payment->status == 'rejected' || $payment->status == 'cancelled') {
-                    $cancel = true;
-                }
-            }
+            return [ 'success' => false , 'message' => 'No existe la factura.', 'payment_id' => $payment_id , 'invoice_id' => $invoice_id];
         }
-  
-        // If the payment's transaction amount is equal (or bigger) than the merchant_order's amount you can release your items
-        if ($paid_amount >= $merchant_order->total_amount) {
-            return [ 'success' => true , 'payment_id' => $payment_id ,'invoice_id' => $invoice_id , 'pay_status' => $invoice_class::PAY_STATUS_PAID , 'transaction' => $merchant_order->id ];
-        } else {
-            if ($cancel) {
-                return [ 'success' => true , 'payment_id' => $payment_id, 'invoice_id' => $invoice_id , 'pay_status' => $invoice_class::PAY_STATUS_REJECT , 'transaction' => $merchant_order->id ];
-            } else {
-                return [ 'success' => true , 'payment_id' => $payment_id, 'invoice_id' => $invoice_id , 'pay_status' => $invoice_class::PAY_STATUS_PENDING , 'transaction' => $merchant_order->id ];
-            }
+
+        $order_status = $merchant_order->status;
+        $paid_amount = $merchant_order->paid_amount;
+
+
+        $common_data =  [ 'success' => true , 'payment_id' => $payment_id ,'invoice_id' => $invoice_id ,  'merchant_order' => $merchant_order,'transaction' => $merchant_order->id ,'order_status' => $order_status, 'paid_amount' => $paid_amount , 'total_amount' => $merchant_order->total_amount ];
+
+        if(isset($payment_mp)){
+
+
+            $common_data['payment_mp'] =   $payment_mp;
+        }
+
+        switch( $order_status){
+            case 'paid': return [ ...$common_data, 'pay_status' => $invoice_class::PAY_STATUS_PAID , ];
+            case 'partially_paid ':  return [ ...$common_data, 'pay_status' => $invoice_class::PAY_STATUS_PENDING  ];
+            case 'payment_required':  return [ ...$common_data, 'pay_status' => $invoice_class::PAY_STATUS_PENDING  ];
+            case 'payment_in_process ':  return [ ...$common_data, 'pay_status' => $invoice_class::PAY_STATUS_PENDING  ];
+            case 'partially_refunded  ':  return [ ...$common_data, 'pay_status' => $invoice_class::PAY_STATUS_PENDING  ];
+            case 'pending_cancel':  return [ ...$common_data, 'pay_status' => $invoice_class::PAY_STATUS_PENDING  ];
+            case 'cancelled':  return [ ...$common_data, 'pay_status' => $invoice_class::STATUS_REJECT  ];
+            case 'closed': return [ ...$common_data, 'pay_status' => $invoice_class::PAY_STATUS_PAID , ];
+            case 'opened': return [ ...$common_data, 'pay_status' => $invoice_class::PAY_STATUS_PENDING , ];
+            case 'expired': return [ ...$common_data, 'pay_status' => $invoice_class::STATUS_REJECT , ];
+            default:  return [ ...$common_data, 'pay_status' => $invoice_class::PAY_STATUS_PENDING  ];
         }
 
     }

@@ -7,6 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 class InvoiceItem extends Model
 {
     
+    protected $fillable = [
+        'comment',
+        'description',
+        'qty',
+        'price',
+        'tax',
+        'unit',
+        'amount'
+    ];
+
     public function invoice()
     {
         return $this->belongsTo(config('bill.models.invoice'));
