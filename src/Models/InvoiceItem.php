@@ -17,6 +17,12 @@ class InvoiceItem extends Model
         'amount'
     ];
 
+
+    protected $attributes = [
+        'qty' => 1,
+        'tax' => 0,
+    ];
+
     public function invoice()
     {
         return $this->belongsTo(config('bill.models.invoice'));

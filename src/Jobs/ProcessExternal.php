@@ -31,9 +31,19 @@ class ProcessExternal implements ShouldQueue
 
         if($this->pay_method->adapter_class){
 
-            $return_callback = call_user_func($this->pay_method->adapter_class .'::onMessage',$this->request,$this->pay_method,$this->record);
 
+            
+            $return_callback = call_user_func($this->pay_method->adapter_class .'::onMessage',$this->request,$this->pay_method,$this->record);
+            $this->record->payload = $this->request;
+            $this->record->adapter_result =$return_callback;
+            if(isset($return_callback['invoice_id'])){
+                $invoice_id = $return_callback['invoice_id'];
+                $this->record->invoice_id = $return_callback['invoice_id'];
+            }
             if(isset($return_callback['payment_id'])){
+
+                $this->record->payment_id = $return_callback['payment_id'];
+
                 $payment_class = config('bill.models.payment');
                 $payment = $payment_class::where('id',$return_callback['payment_id'])->first();
                 if($payment) {
@@ -42,6 +52,25 @@ class ProcessExternal implements ShouldQueue
                     $payment->save();
                 }
             }
+
+            if(isset($return_callback['pay_status'])){
+                $new_status = $return_callback['pay_status'];
+
+                if(isset($return_callback['invoice_id'])){
+                    $invoice_class = config('bill.models.invoice');
+                    $invoice = $invoice_class::where('id',$invoice_id)->first();
+
+                    $invoice->status = $new_status;
+                    $invoice->save();
+                }
+
+            }
+
+            $this->record->status = PayMethodRecord::STATUS_PROCESSED;
+            $this->record->save();
+
+
+            
         }
     }
 }
