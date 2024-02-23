@@ -3,9 +3,6 @@
 namespace Clonixdev\LaravelBill\PayMethodAdapters;
 
 use Clonixdev\LaravelBill\Models\PayMethodAdapter;
-use MercadoPago\SDK;
-use MercadoPago\Preference;
-use MercadoPago\Item;
 
 class TestAdapter extends PayMethodAdapter 
 {
@@ -22,18 +19,6 @@ class TestAdapter extends PayMethodAdapter
 
         $pay_method = $invoice->payMethod;
         $config = $pay_method->getConfig();
-
-
-    
-
-
-        $payer = new \MercadoPago\Payer();
-        $payer->name = $invoice->buyer_name;
-        $payer->surname = $invoice->buyer_last_name;
-        $payer->email = trim($invoice->buyer_email);
-        $payer->phone = array(
-            "number" => trim($invoice->buyer_phone),
-        );
 
 
         $payment->payload_out = "TEST-".time();
