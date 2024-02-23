@@ -27,7 +27,7 @@ class PayMethodController extends ApiBaseController
         $record->status = $pay_method_record_class::STATUS_INCOMING;
         $record->save();
 
-        $process_external_class = config('bill.process_external_job');
+        $process_external_class = config('bill.models.process_external_job');
 
         $process_external_class::dispatch($request->all(),$pay_method,$record);
 
