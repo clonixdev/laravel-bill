@@ -69,14 +69,15 @@ class TestAdapter extends PayMethodAdapter
     public static function onMessage($request,$pay_method,$record){
 
 
-
-
         $merchant_order = null;
         $config = $pay_method->getConfig();
 
 
-        $payment_id = $request->payment_id;
+        $payment_id = isset($request["payment_id"]) ? $request["payment_id"] : null;
 
+        if(!$payment_id ){
+            return [ 'success' => false , 'message' => 'No existe el registro de pago.'];
+        }
        $payment = self::getPayment($payment_id);
 
 
@@ -95,7 +96,7 @@ class TestAdapter extends PayMethodAdapter
         }
 
 
-       return [ 'success' => true , 'payment_id' => $payment_id ,'invoice_id' => $invoice_id , 'pay_status' => $invoice_class::PAY_STATUS_PAID  ];
+       return [ 'success' => true , 'payment_id' => $payment_id ,'invoice_id' => $invoice_id , 'pay_status' => $invoice_class::PAY_STATUS_PAID,'transaction' => time()  ];
 
 
 
