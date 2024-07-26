@@ -45,16 +45,16 @@ class TestAdapter extends PayMethodAdapter
 
         // Verificar si hubo algún error
         if ($response === false) {
-            echo 'Error de cURL: ' . curl_error($ch);
+            $data = 'Error de cURL: ' . curl_error($ch);
         } else {
             // La respuesta de la solicitud
-            echo 'Respuesta: ' . $response;
+            $data = 'Respuesta: ' . $response;
         }
 
         // Cerrar sesión cURL
         curl_close($ch);
 
-        return "PASARELA DE PAGO DE PRUEBA";
+        return $data;
 
     }
 
