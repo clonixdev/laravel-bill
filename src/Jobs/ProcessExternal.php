@@ -32,7 +32,7 @@ class ProcessExternal implements ShouldQueue
      
 
         if($this->pay_method->adapter_class){
-            
+
             $adapter_class = $this->pay_method->adapter_class;
             // Verificar si la clase y el método existen
             if (!class_exists($adapter_class)) {
@@ -42,7 +42,9 @@ class ProcessExternal implements ShouldQueue
                 throw new \Exception("Method onMessage does not exist in class {$adapter_class}.");
             }
    
-            $return_callback = call_user_func([$adapter_class, 'onMessage'], $this->request, $this->pay_method, $this->record);
+            $callback = [$adapter_class, 'onMessage'];
+            dump($callback);
+            $return_callback = call_user_func($callback, $this->request, $this->pay_method, $this->record);
             
             $this->record->payload = $this->request;
             $this->record->adapter_result =$return_callback;
