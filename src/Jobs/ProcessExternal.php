@@ -13,16 +13,18 @@ class ProcessExternal implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-
+	
     public $pay_method;
     public $request;
     public $record;
+	public $website_id;
 
-    public function __construct($request,$pay_method,$record)
+    public function __construct($request,$pay_method,$record,$website_id = null)
     {
         $this->pay_method = $pay_method;
         $this->request = $request;
         $this->record = $record;
+		$this->website_id = $website_id;
     }
 
     public function handle()
