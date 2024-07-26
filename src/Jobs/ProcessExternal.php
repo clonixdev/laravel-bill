@@ -34,8 +34,9 @@ class ProcessExternal implements ShouldQueue
         if($this->pay_method->adapter_class){
 
 
+            $adapter_class = $this->pay_method->adapter_class;
+            $return_callback = call_user_func([$adapter_class, 'onMessage'], $this->request, $this->pay_method, $this->record);
             
-            $return_callback = call_user_func($this->pay_method->adapter_class .'::onMessage',$this->request,$this->pay_method,$this->record);
             $this->record->payload = $this->request;
             $this->record->adapter_result =$return_callback;
             if(isset($return_callback['invoice_id'])){
