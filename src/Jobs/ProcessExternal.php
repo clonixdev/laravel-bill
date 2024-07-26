@@ -43,7 +43,6 @@ class ProcessExternal implements ShouldQueue
             }
    
             $callback = [$adapter_class, 'onMessage'];
-            dump($callback);
             $return_callback = call_user_func($callback, $this->request, $this->pay_method, $this->record);
             
             $this->record->payload = $this->request;
