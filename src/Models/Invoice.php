@@ -76,16 +76,15 @@ class Invoice extends Model
         });
 
         static::updated(function ($invoice) {
-           /* if ($invoice->isDirty('status')) {
+            if ($invoice->isDirty('status')) {
                 $oldStatus = $invoice->getOriginal('status');
                 $newStatus = $invoice->getAttribute('status');
                 if ($newStatus === self::STATUS_PAID ) {
-                    InvoicePaid::dispatch($invoice);
+                    InvoicePaid::dispatch($website_id,$invoice);
                 }else  if ($newStatus === self::STATUS_REJECT ) {
-                    InvoiceCancelled::dispatch($invoice);
-
+                    InvoiceCancelled::dispatch($website_id,$invoice);
                 }
-            }*/
+            }
         });
 
     }
